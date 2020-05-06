@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+p files = Dir['./**/*']
+
+p File.readlines(files[4]).map(&:chomp)
+
+
+if 'a' == 'a'
+  [1, 2, 3].each do
+    puts 'This is a block with ending'
+  end
+end
+
+[1, 2, 3].each do
+  if 'b' == 'b'
+    puts 'This block has no ending'
+  end
+end

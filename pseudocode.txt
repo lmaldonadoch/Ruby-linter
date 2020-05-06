@@ -1,0 +1,62 @@
+﻿Provides feedback about errors or warning in code
+
+I will have 2 main files:
+main
+This will contain the executable file that will read the files on the folder where it gets executed and will provide feedback
+
+create an array of keywords which should have an end
+create an array of keywords which should have an empty line afterwards
+create an array of operators
+
+linter_parser
+
+need to get the code in a readable way i.e. a string
+
+This will be a module that will have several methods:
+
+is_a_block?
+Checks if the line is the beginning of a block
+
+block_end
+Finds the end of a block. If it can not find it, returns an error with the beginning of the block
+
+parenthesis_checker
+Returns true if parenthesis are paired, else returns error with the line with unpair number of parenth/brack/curlybrack
+
+
+
+length
+validate length of classes
+
+line_length
+validate the line length
+
+block_length
+validate the block’s length
+
+semicolon validation
+validate semicolons at end of lines
+
+single_expression
+validate only one expression per line
+
+single_empty_line
+validate only one empty line
+
+identation
+checks that identation is 2 spaces
+
+
+coma_spacing
+checks that a coma has some spacing after it
+
+
+opperator_spacing
+checks that operators has spacing around them
+
+scope_check
+checks if a variable is being called out of scope
+
+
+
+
