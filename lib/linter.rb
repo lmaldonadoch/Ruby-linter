@@ -1,23 +1,25 @@
 module Linter
   def block?
-    return true if lstrip.start_with?('if', 'def', 'while', 'until') || end_with?('do') || (end_with?('|') && !(/(do)(\s+)(\|)/ =~ self).nil?)
+    if strip.start_with?('if', 'def', 'while', 'until') || strip.end_with?('do') || (strip.end_with?('|') && !(/(do)(\s+)(\|)/ =~ self).nil?)
+      return true
+    end
 
     false
   end
 
-  def parenthesis_even (n)
-    return ['(', ')'] if n.count('(') < n.count(')')
-    return [')', '('] if n.count('(') > n.count(')')
+  def parenthesis_even(line)
+    return ['(', ')'] if line.count('(') < line.count(')')
+    return [')', '('] if line.count('(') > line.count(')')
   end
 
-  def brackets_even (n)
-    return ['[', ']'] if n.count('[') < n.count(']')
-    return [']', '['] if n.count('[') > n.count(']')
+  def brackets_even(line)
+    return ['[', ']'] if line.count('[') < line.count(']')
+    return [']', '['] if line.count('[') > line.count(']')
   end
 
-  def curly_brackets_even (n)
-    return ['{', '}'] if n.count('{') < n.count('}')
-    return ['}', '{'] if n.count('{') > n.count('}')
+  def curly_brackets_even(line)
+    return ['{', '}'] if line.count('{') < line.count('}')
+    return ['}', '{'] if line.count('{') > line.count('}')
   end
 end
 

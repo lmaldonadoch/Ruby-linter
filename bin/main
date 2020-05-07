@@ -9,9 +9,57 @@ line_length = 120
 block_length = 30
 class_length = 150
 indentation = 2
- 
 
 linter = LinterClass.new(File.readlines(files[0]).map(&:chomp), line_length, block_length, class_length, indentation)
 
-p linter.block_dictionary
-p linter.missing_parenthesis
+answer = 'Y'
+
+if linter.line_indentation_errors != []
+  puts 'The file contains some indentation errors. It is important to correct them before continuing. Do you want to auto-correct them? Y/n'
+  answer = gets.chomp.upcase
+end
+if answer == 'Y'
+  linter.indentation_autocorrect
+  File.open('./lib/sample_code.rb', 'w') {|f|
+    linter.arr.each do |n|
+      f.puts n
+    end
+  }
+  linter.validate
+  puts "********** TOTAL ERRORS #{linter.multiple_empty_lines_errors.length + linter.trailing_space_errors.length + linter.missing_parenthesis.length + linter.line_length_errors.length + linter.block_errors.length} **********"
+  puts ''
+  puts 'Icomplete parenthesis errors:'
+  linter.missing_parenthesis.each do |n|
+    puts n
+  end
+  puts ''
+  puts 'Line length errors:'
+  linter.line_length_errors.each do |n|
+    puts n
+  end
+  puts ''
+  puts 'Trailing white apce errors:'
+  linter.trailing_space_errors.each do |n|
+    puts n
+  end
+  puts ''
+  puts 'Multiple empty lines errors:'
+  linter.multiple_empty_lines_errors.each do |n|
+    puts n
+  end
+  puts ''
+  puts 'Class length errors:'
+  linter.block_errors.each do |n|
+    puts n
+  end
+else
+  linter.line_indentation_errors.each do |n|
+    puts n
+  end
+end
+
+# File.open('./lib/sample_code.rb', 'w') {|f|
+#   linter.arr.each do |n|
+#     f.puts n + 'hey'
+#   end
+# }
