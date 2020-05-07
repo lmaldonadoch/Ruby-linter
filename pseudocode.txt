@@ -8,7 +8,11 @@ create an array of keywords which should have an end
 create an array of keywords which should have an empty line afterwards
 create an array of operators
 
-linter_parser
+
+
+
+
+linterclass
 
 need to get the code in a readable way i.e. a string
 
@@ -58,5 +62,12 @@ scope_check
 checks if a variable is being called out of scope
 
 
+
+
+
+****************************************
+
+ask user if wants to auto correct the file
+if it has no style issues then check for unclosed / parenthesis / out of scope variables
 
 

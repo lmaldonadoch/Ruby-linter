@@ -1,18 +1,17 @@
 #!/usr/bin/env ruby
+require_relative '../lib/linterclass.rb'
 
-p files = Dir['./**/*']
+files = Dir['./**/*.rb']
 
-p File.readlines(files[4]).map(&:chomp)
+# This is going to be a for loop that will go through all the files
 
+line_length = 120
+block_length = 30
+class_length = 150
+indentation = 2
+ 
 
-if 'a' == 'a'
-  [1, 2, 3].each do
-    puts 'This is a block with ending'
-  end
-end
+linter = LinterClass.new(File.readlines(files[0]).map(&:chomp), line_length, block_length, class_length, indentation)
 
-[1, 2, 3].each do
-  if 'b' == 'b'
-    puts 'This block has no ending'
-  end
-end
+p linter.block_dictionary
+p linter.missing_parenthesis
