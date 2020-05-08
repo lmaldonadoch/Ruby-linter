@@ -1,5 +1,5 @@
 # rubocop:disable Layout/LineLength
-require_relative 'linter.rb'
+require_relative './modules/linter.rb'
 
 class LinterClass
   include Linter
@@ -26,12 +26,13 @@ class LinterClass
 
   def validate(answer)
     empty_line_eof
+    @line_indentation_errors = [] if answer == 'Y'
     @arr.each_with_index do |n, i|
       parenthesis(@missing_parenthesis, n, i)
       line_length_validate(@line_length_errors, n, i)
       trailing_space_validate(@trailing_space_errors, n, i)
       multiple_empty_lines_validate(@multiple_empty_lines_errors, n, i)
-      space_around_operators(operator_spacing_errors, n, i)
+      space_around_operators(@operator_spacing_errors, n, i)
       block_dictionary_creator(@block_dictionary, n, i) if answer == 'Y'
     end
     block_length
@@ -123,24 +124,19 @@ class LinterClass
     end
   end
 
-  # rubocop:enable Metrics/CyclomaticComplexity
-  # rubocop:enable Metrics/PerceivedComplexity
-
   def autocorrect
     indentation_autocorrect
     dummy = []
     @arr.each_with_index do |line, index|
       @arr[index] = line.rstrip
-      while @arr[index].strip == '' && @arr[index + 1] == ''
-        @arr.delete_at(index)
+      @arr.delete_at(index) while @arr[index].strip == '' && @arr[index + 1] == ''
+      space_around_operators(dummy, line, index) do |n|
+        @arr[index].insert(n[1] + 1, ' ') if n[1].positive?
+        @arr[index].insert(n[2] + 1, ' ') if n[2].positive? && n[1].positive?
+        @arr[index].insert(n[2], ' ') if n[2].positive? && n[1].negative?
       end
-      space_around_operators(dummy, line, index){|n|
-        @arr[index].insert(n[1] + 1, ' ') if n[1] > 0
-        @arr[index].insert(n[2] + 1, ' ') if n[2] > 0
-      }
     end
-    @arr << '' if @empty_line_eof_errors.length > 0
-    @block_dictionary = []
+    @arr << '' unless @empty_line_eof_errors.empty?
     @missing_parenthesis = []
     @line_length_errors = []
     @block_errors = []
@@ -151,4 +147,6 @@ class LinterClass
     @operator_spacing_errors = []
   end
 end
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Layout/LineLength

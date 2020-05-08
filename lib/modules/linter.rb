@@ -1,6 +1,6 @@
 module Linter
   def block?
-    if strip.start_with?('if', 'def', 'while', 'until') || strip.end_with?('do') ||
+    if strip.start_with?('if', 'def', 'while', 'until', 'module', 'unless') || strip.end_with?('do') ||
        (strip.end_with?('|') && !(/(do)(\s+)(\|)/ =~ self).nil?)
       return true
     end

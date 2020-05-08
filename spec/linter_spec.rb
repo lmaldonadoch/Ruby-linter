@@ -1,4 +1,4 @@
-require './lib/linter.rb'
+require './lib/modules/linter.rb'
 
 describe Linter do
   include Linter
@@ -29,16 +29,44 @@ describe Linter do
     end
   end
 
-  describe '#block_end' do
-    it 'Returns 0 when there is no block end missing' do
-      expect(["if 'a' == 'a'", '  [1, 2, 3].each do', "    puts 'This is a block with ending'",
-              '  end', 'end']).to eql(4)
+  describe '#parenthesis_even' do
+    it 'Returns an array, position 0 is the element missing, position 1 is the counterpart' do
+      expect(parenthesis_even('(something with no closing parenthesis')).to eql([')', '('])
     end
 
-    it 'Returns the end of the block when it exists' do
-      expect(["if 'a' == 'a'", '  [1, 2, 3].each do', "    puts 'This is a block with ending'",
-              '  end', 'end', '', '[1, 2, 3].each do', "  if 'b' == 'b'", "    puts 'This block has no ending'",
-              '  end']).to eql(5)
+    it 'Returns an array, position 0 is the element missing, position 1 is the counterpart' do
+      expect(parenthesis_even('something with no opening parenthesis)')).to eql(['(', ')'])
     end
   end
+
+  describe '#brackets_even' do
+    it 'Returns an array, position 0 is the element missing, position 1 is the counterpart' do
+      expect(brackets_even('[something with no closing brackets')).to eql([']', '['])
+    end
+  end
+
+  describe '#curly_brackets_even' do
+    it 'Returns an array, position 0 is the element missing, position 1 is the counterpart' do
+      expect(curly_brackets_even('something with no opening curly-brackets}')).to eql(['{', '}'])
+    end
+  end
+
+  describe '#operator_validator' do
+    it 'Returns an array with the operator, -1 if no space is missing or the index where a space is missing' do
+      expect(operator_validator('something + something else')).to eql([['+',-1,-1]])
+    end
+
+    it 'Returns an array with the operator, -1 if no space is missing or the index where a space is missing' do
+      expect(operator_validator('something += something else')).to eql([['+=',-1,-1]])
+    end
+
+    it 'Returns an array with the operator, -1 if no space is missing or the index where a space is missing' do
+      expect(operator_validator('something <=something else')).to eql([['<=',-1,12]])
+    end
+
+    it 'Returns an array with the operator, -1 if no space is missing or the index where a space is missing' do
+      expect(operator_validator('something*something else')).to eql([['*',8,10]])
+    end
+  end
+    
 end

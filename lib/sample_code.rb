@@ -3,13 +3,13 @@ def bubble_sort(arr)
   cont = 1
   while ordered.positive?
     ordered = 0
-    (arr.length - cont).times do |i|   
-      next unless arr[i]>arr[i+ 1]
+    (arr.length - cont.times do |i|
+      next unless arr[i] > arr[i + 1]
 
       temp = arr[i + 1
       arr[i + 1] = arr[i]
       arr[i] = temp
-      ordered+=1
+      ordered += 1
     end
     cont += 1
   end
@@ -17,7 +17,7 @@ def bubble_sort(arr)
 end
 
 def bubble_sort_by(arr)
-  ordered=1
+  ordered = 1
   cont = 1
   while ordered.positive?
     ordered = 0
@@ -30,52 +30,6 @@ def bubble_sort_by(arr)
       ordered += 1
     end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     cont += 1
   end
   p arr
@@ -85,4 +39,5 @@ bubble_sort_by %w[hi hello hey] do |left, right|
   right.length - left.length
 end
 
-bubble_sort([4, 3, 78, 2, 0, 2])
+bubble_sort([4, 3, 78, 2, 0, 2)
+
