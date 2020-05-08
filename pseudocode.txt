@@ -30,13 +30,13 @@ Returns true if parenthesis are paired, else returns error with the line with un
 
 
 length
-validate length of classes
+## validate length of classes
 
 line_length
-validate the line length
+## validate the line length
 
 block_length
-validate the block’s length
+## validate the block’s length
 
 semicolon validation
 validate semicolons at end of lines
@@ -47,8 +47,8 @@ validate only one expression per line
 single_empty_line
 validate only one empty line
 
-identation
-checks that identation is 2 spaces
+indentation
+checks that indentation is 2 spaces
 
 
 coma_spacing

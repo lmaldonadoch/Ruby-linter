@@ -4,7 +4,7 @@ require_relative 'linter.rb'
 class LinterClass
   include Linter
 
-  attr_reader :operator_spacing_errors, :empty_line_eof_errors, :line_indentation_errors, :arr, :block_dictionary, :missing_parenthesis, :line_length_errors, :block_errors, :trailing_space_errors, :multiple_empty_lines_errors, :logic_operators_errors
+  attr_reader :operator_spacing_errors, :empty_line_eof_errors, :line_indentation_errors, :arr, :block_dictionary, :missing_parenthesis, :line_length_errors, :block_errors, :trailing_space_errors, :multiple_empty_lines_errors
 
   def initialize(arr, line_length, block_length, class_length, indentation)
     @arr = arr
@@ -80,7 +80,8 @@ class LinterClass
 
   def space_around_operators(ret_arr, line, index)
     arr = operator_validator(line)
-    arr.each do |n|
+    arr.each_with_index do |n, i|
+      arr[i] = yield(n) if block_given?
       ret_arr << "Line #{index + 1} has wrong spacing around operator #{n[0]}" unless n[1] == -1 && n[2] == -1
     end
   end
@@ -125,6 +126,29 @@ class LinterClass
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity
 
-  def autocorrect; end
+  def autocorrect
+    indentation_autocorrect
+    dummy = []
+    @arr.each_with_index do |line, index|
+      @arr[index] = line.rstrip
+      while @arr[index].strip == '' && @arr[index + 1] == ''
+        @arr.delete_at(index)
+      end
+      space_around_operators(dummy, line, index){|n|
+        @arr[index].insert(n[1] + 1, ' ') if n[1] > 0
+        @arr[index].insert(n[2] + 1, ' ') if n[2] > 0
+      }
+    end
+    @arr << '' if @empty_line_eof_errors.length > 0
+    @block_dictionary = []
+    @missing_parenthesis = []
+    @line_length_errors = []
+    @block_errors = []
+    @trailing_space_errors = []
+    @multiple_empty_lines_errors = []
+    @line_indentation_errors = []
+    @empty_line_eof_errors = []
+    @operator_spacing_errors = []
+  end
 end
 # rubocop:enable Layout/LineLength
