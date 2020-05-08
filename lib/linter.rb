@@ -1,7 +1,7 @@
 module Linter
   def block?
     if strip.start_with?('if', 'def', 'while', 'until') || strip.end_with?('do') ||
-      (strip.end_with?('|') && !(/(do)(\s+)(\|)/ =~ self).nil?)
+       (strip.end_with?('|') && !(/(do)(\s+)(\|)/ =~ self).nil?)
       return true
     end
 
@@ -23,28 +23,33 @@ module Linter
     return ['}', '{'] if line.count('{') > line.count('}')
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/BlockNesting
+
   def operator_validator(line)
-    operators = ['+', '-', '**', '>', '<', '!', '*', '=']
+    operators = ['+', '-', '>', '<', '!', '*', '=']
     ret_arr = []
     operators.each do |n|
       arr = line.chars
       counter = 0
       while counter < arr.length
         if arr[counter] == n
-          if operators.include?(arr[counter-1]) && n == '='
+          if operators.include?(arr[counter - 1]) && n == '='
             counter += 1
             next
           end
           dummy_arr = []
-          if arr[counter+1] == '='
+          if arr[counter + 1] == '='
             dummy_arr << (arr[counter] + '=')
-            dummy_arr << (arr[counter - 1] == ' '? -1 : counter - 1)
-            dummy_arr << (arr[counter + 2] == ' '? -1 : counter + 2)
+            dummy_arr << (arr[counter - 1] == ' ' ? -1 : counter - 1)
+            dummy_arr << (arr[counter + 2] == ' ' ? -1 : counter + 2)
             counter += 2
           else
             dummy_arr << (arr[counter])
-            dummy_arr << (arr[counter - 1] == ' '? -1 : counter - 1)
-            dummy_arr << (arr[counter + 1] == ' '? -1 : counter + 1)
+            dummy_arr << (arr[counter - 1] == ' ' ? -1 : counter - 1)
+            dummy_arr << (arr[counter + 1] == ' ' ? -1 : counter + 1)
             counter += 1
           end
           ret_arr << dummy_arr
@@ -55,6 +60,11 @@ module Linter
     end
     ret_arr
   end
+
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/BlockNesting
 end
 
 class String

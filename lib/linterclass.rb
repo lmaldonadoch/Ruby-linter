@@ -95,6 +95,9 @@ class LinterClass
     end
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+
   def check_indentation
     count = 0
     @arr.each_with_index do |line, index|
@@ -111,13 +114,16 @@ class LinterClass
         (@arr[index] = (' ' * ([0, (count - 1)].max * @indentation)) + line.lstrip)
       elsif line.strip == ''
         @arr[index] = ''
-      else
-        (@arr[index] = (' ' * (count * @indentation)) + line.lstrip) if line != '' || line.strip != 'end'
+      elsif line != '' || line.strip != 'end'
+        (@arr[index] = (' ' * (count * @indentation)) + line.lstrip)
       end
       count += 1 if line.block?
       count -= 1 if line.strip == 'end'
     end
   end
+
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def autocorrect; end
 end

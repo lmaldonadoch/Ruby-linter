@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# rubocop:disable Layout/LineLength
 require_relative '../lib/linterclass.rb'
 
 files = Dir['./**/*.rb']
@@ -15,9 +16,12 @@ linter = LinterClass.new(File.readlines(files[0]).map(&:chomp), line_length, blo
 answer = 'Y'
 
 if linter.line_indentation_errors != []
-  puts 'The file contains some indentation errors. Indentation is important for enhanced functionality like block length validation, unclosed blocks and variable out of scope. Do you want to auto-correct them? Y/n'
+  puts 'The file contains some indentation errors. Indentation is important for enhanced functionality like block length validation, unclosed blocks and variables out of scope. Do you want to auto-correct them? Y/n'
   answer = gets.chomp.upcase
-  puts 'Please select Y/N. Do you want to autocorrect the indentation?' until %w[Y N].include?(answer)
+  until %w[Y N].include?(answer)
+    puts 'Please select Y/n. Do you want to autocorrect the indentation?'
+    answer = gets.chomp.upcase
+  end
 end
 if answer == 'Y'
   linter.indentation_autocorrect
@@ -77,3 +81,4 @@ end
 #     f.puts n + 'hey'
 #   end
 # }
+# rubocop:enable Layout/LineLength
