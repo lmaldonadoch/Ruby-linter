@@ -4,12 +4,12 @@ def bubble_sort(arr)
   while ordered.positive?
     ordered = 0
     (arr.length - cont).times do |i|   
-      next unless arr[i] > arr[i + 1]
+      next unless arr[i]>arr[i + 1]
 
       temp = arr[i + 1
       arr[i + 1] = arr[i]
       arr[i] = temp
-      ordered += 1
+      ordered+=1
     end
     cont += 1
   end
@@ -17,7 +17,7 @@ def bubble_sort(arr)
 end
 
 def bubble_sort_by(arr)
-  ordered = 1
+  ordered=1
   cont = 1
   while ordered.positive?
     ordered = 0
