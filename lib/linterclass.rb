@@ -79,7 +79,10 @@ class LinterClass
   end
 
   def space_around_operators(ret_arr, line, index)
-    ret_arr << "Line #{index + 1} has wrong spacing around operator #{operator_validator(line)[0]}" unless operator_validator(line).length == 0
+    arr = operator_validator(line)
+    arr.each do |n|
+      ret_arr << "Line #{index + 1} has wrong spacing around operator #{n[0]}" unless n[1] == -1 || n[2] == -1
+    end
   end
 
   def block_length

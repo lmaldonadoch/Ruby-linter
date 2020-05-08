@@ -53,8 +53,7 @@ module Linter
         end
       end
     end
-    p line
-    p ret_arr
+    ret_arr
   end
 end
 
