@@ -4,7 +4,7 @@ def bubble_sort(arr)
   while ordered.positive?
     ordered = 0
     (arr.length - cont).times do |i|   
-      next unless arr[i]>arr[i + 1]
+      next unless arr[i]>arr[i+ 1]
 
       temp = arr[i + 1
       arr[i + 1] = arr[i]
