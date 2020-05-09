@@ -4,7 +4,7 @@ require_relative './modules/linter.rb'
 class LinterClass
   include Linter
 
-  attr_reader :operator_spacing_errors, :empty_line_eof_errors, :line_indentation_errors, :arr, :block_dictionary, :missing_parenthesis, :line_length_errors, :block_errors, :trailing_space_errors, :multiple_empty_lines_errors
+  attr_reader :block_not_closed, :operator_spacing_errors, :empty_line_eof_errors, :line_indentation_errors, :arr, :block_dictionary, :missing_parenthesis, :line_length_errors, :block_errors, :trailing_space_errors, :multiple_empty_lines_errors
 
   def initialize(arr, line_length, block_length, class_length, indentation)
     @arr = arr
@@ -21,6 +21,7 @@ class LinterClass
     @line_indentation_errors = []
     @empty_line_eof_errors = []
     @operator_spacing_errors = []
+    @block_not_closed = []
     check_indentation
   end
 
@@ -38,6 +39,63 @@ class LinterClass
     block_length
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+
+  def check_indentation
+    count = 0
+    @arr.each_with_index do |line, index|
+      @line_indentation_errors << "Line #{index + 1} should have #{count * @indentation} spaces" unless line.start_with?(' ' * (count * @indentation)) || line.strip == '' || (line.strip == 'end' && line.start_with?(' ' * [0, (count - 1)].max * @indentation))
+      count += 1 if line.block?
+      count -= 1 if line.strip == 'end'
+    end
+    @line_indentation_errors
+  end
+
+  def indentation_autocorrect
+    count = 0
+    @arr.each_with_index do |line, index|
+      if line.strip == 'end'
+        (@arr[index] = (' ' * ([0, (count - 1)].max * @indentation)) + line.lstrip)
+      elsif line.strip == ''
+        @arr[index] = ''
+      elsif line != '' || line.strip != 'end'
+        (@arr[index] = (' ' * (count * @indentation)) + line.lstrip)
+      end
+      count += 1 if line.block?
+      count -= 1 if line.strip == 'end'
+    end
+    @arr
+  end
+
+  def autocorrect
+    dummy = []
+    @arr.each_with_index do |line, index|
+      @arr[index] = line.rstrip
+      @arr.delete_at(index) while @arr[index].strip == '' && @arr[index + 1] == ''
+      space_around_operators(dummy, line, index) do |n|
+        @arr[index].insert(n[1] + 1, ' ') if n[1].positive?
+        @arr[index].insert(n[2] + 1, ' ') if n[2].positive? && n[1].positive?
+        @arr[index].insert(n[2], ' ') if n[2].positive? && n[1].negative?
+      end
+    end
+    @missing_parenthesis = []
+    @line_length_errors = []
+    @block_errors = []
+    @trailing_space_errors = []
+    @multiple_empty_lines_errors = []
+    @line_indentation_errors = []
+    @empty_line_eof_errors = []
+    @operator_spacing_errors = []
+    @block_dictionary = []
+    @block_not_closed = []
+    @arr << '' unless @empty_line_eof_errors.empty?
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
+
+  private
+
   def block_dictionary_creator(ret_arr, line, index)
     if line.block?
       ret_arr << [index + 1, (line.length - line.lstrip.length) / @indentation]
@@ -50,11 +108,6 @@ class LinterClass
       end
     end
     ret_arr
-  end
-
-  def variable_out_of_scope(line)
-    if line.include?(' = ') || (line.lstrip.start_with?('def') && line.end_with?(')'))
-    end
   end
 
   def line_length_validate(ret_arr, line, index)
@@ -89,64 +142,16 @@ class LinterClass
 
   def block_length
     @block_dictionary.each do |block|
-      if @arr[block[0] - 1].start_with?('class') && block[2] - block[0] > @class_length
-        @block_errors << "Block starting at #{block[0]} does not satisfy the maximum class length given of #{@class_length}"
-      elsif block[2] - block[0] > @block_length
-        @block_errors << "Block starting at #{block[0]} does not satisfy the maximum block length given of #{@class_length}"
+      if block.length < 3
+        @block_not_closed << "Block starting on line #{block[0]} is not closed"
+      else
+        if @arr[block[0] - 1].start_with?('class') && block[2] - block[0] > @class_length
+          @block_errors << "Block starting at #{block[0]} does not satisfy the maximum class length given of #{@class_length}"
+        elsif block[2] - block[0] > @block_length
+          @block_errors << "Block starting at #{block[0]} does not satisfy the maximum block length given of #{@class_length}"
+        end
       end
     end
   end
-
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/PerceivedComplexity
-
-  def check_indentation
-    count = 0
-    @arr.each_with_index do |line, index|
-      @line_indentation_errors << "Line #{index + 1} should have #{count * @indentation} spaces" unless line.start_with?(' ' * (count * @indentation)) || line.strip == '' || (line.strip == 'end' && line.start_with?(' ' * [0, (count - 1)].max * @indentation))
-      count += 1 if line.block?
-      count -= 1 if line.strip == 'end'
-    end
-  end
-
-  def indentation_autocorrect
-    count = 0
-    @arr.each_with_index do |line, index|
-      if line.strip == 'end'
-        (@arr[index] = (' ' * ([0, (count - 1)].max * @indentation)) + line.lstrip)
-      elsif line.strip == ''
-        @arr[index] = ''
-      elsif line != '' || line.strip != 'end'
-        (@arr[index] = (' ' * (count * @indentation)) + line.lstrip)
-      end
-      count += 1 if line.block?
-      count -= 1 if line.strip == 'end'
-    end
-  end
-
-  def autocorrect
-    indentation_autocorrect
-    dummy = []
-    @arr.each_with_index do |line, index|
-      @arr[index] = line.rstrip
-      @arr.delete_at(index) while @arr[index].strip == '' && @arr[index + 1] == ''
-      space_around_operators(dummy, line, index) do |n|
-        @arr[index].insert(n[1] + 1, ' ') if n[1].positive?
-        @arr[index].insert(n[2] + 1, ' ') if n[2].positive? && n[1].positive?
-        @arr[index].insert(n[2], ' ') if n[2].positive? && n[1].negative?
-      end
-    end
-    @arr << '' unless @empty_line_eof_errors.empty?
-    @missing_parenthesis = []
-    @line_length_errors = []
-    @block_errors = []
-    @trailing_space_errors = []
-    @multiple_empty_lines_errors = []
-    @line_indentation_errors = []
-    @empty_line_eof_errors = []
-    @operator_spacing_errors = []
-  end
+  # rubocop:enable Layout/LineLength
 end
-# rubocop:enable Metrics/CyclomaticComplexity
-# rubocop:enable Metrics/PerceivedComplexity
-# rubocop:enable Layout/LineLength

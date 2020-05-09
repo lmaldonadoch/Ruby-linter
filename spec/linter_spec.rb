@@ -53,20 +53,19 @@ describe Linter do
 
   describe '#operator_validator' do
     it 'Returns an array with the operator, -1 if no space is missing or the index where a space is missing' do
-      expect(operator_validator('something + something else')).to eql([['+',-1,-1]])
+      expect(operator_validator('something + something else')).to eql([['+', -1, -1]])
     end
 
     it 'Returns an array with the operator, -1 if no space is missing or the index where a space is missing' do
-      expect(operator_validator('something += something else')).to eql([['+=',-1,-1]])
+      expect(operator_validator('something += something else')).to eql([['+=', -1, -1]])
     end
 
     it 'Returns an array with the operator, -1 if no space is missing or the index where a space is missing' do
-      expect(operator_validator('something <=something else')).to eql([['<=',-1,12]])
+      expect(operator_validator('something <=something else')).to eql([['<=', -1, 12]])
     end
 
     it 'Returns an array with the operator, -1 if no space is missing or the index where a space is missing' do
-      expect(operator_validator('something*something else')).to eql([['*',8,10]])
+      expect(operator_validator('something*something else')).to eql([['*', 8, 10]])
     end
   end
-    
 end
