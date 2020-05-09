@@ -1,4 +1,4 @@
-require_relative './modules/linter.rb'
+require_relative './modules/linter_module.rb'
 
 class LinterClass
   include Linter

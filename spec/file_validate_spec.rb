@@ -2,7 +2,7 @@ require './lib/modules/file_validate.rb'
 
 describe FileValidate do
   include FileValidate
-  let(:linter_rspec_file) { './spec/linter_spec.rb' }
+  let(:linter_rspec_file) { './spec/linter_module_spec.rb' }
   let(:err) { './spec/linter_spec2.rb' }
   let(:rubo) { './.rubocop.yml' }
   describe '#file_validate' do

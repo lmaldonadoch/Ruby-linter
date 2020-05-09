@@ -1,4 +1,4 @@
-require './lib/modules/linter.rb'
+require './lib/modules/linter_module.rb'
 
 describe Linter do
   include Linter
