@@ -117,6 +117,7 @@ class LinterClass
     end
     ret_arr
   end
+  # rubocop:disable Style/GuardClause
 
   def line_length_validate(ret_arr, line, index)
     if line.length >= @line_length
@@ -143,6 +144,7 @@ class LinterClass
       ret_arr << "Line #{index + 1} has more '#{curly_brackets_even(line)[1]}' than '#{curly_brackets_even(line)[0]}'"
     end
   end
+  # rubocop:enable Style/GuardClause
 
   def empty_line_eof
     @empty_line_eof_errors << 'File should end with an empty line' if @arr[-1].strip != ''
