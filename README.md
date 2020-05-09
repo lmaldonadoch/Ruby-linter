@@ -43,7 +43,7 @@ The project's goal was to create a Linter to use in your everyday coding life. T
 - Operator spacing.
 - Unclosed block.
 
-Additional to this, the linter allows you to auto-correct most of these style issues just by typing 'y'.
+Additional to this, the linter allows you to auto-correct most of these style issues just by typing 'y'. I decided to build this linter since I was having a lot of style issues with my Ruby projects and files. I am convinced that there is a lot to improve on the current linter options, and I would like to contribute with my design and tools to make the life of programmers better.
 
 ## Project Structure
 
