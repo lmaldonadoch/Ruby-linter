@@ -23,7 +23,7 @@ else
 
   if linter.line_indentation_errors != []
     print 'The file contains some indentation errors. Indentation is important for enhanced functionality like'
-    puts ' block length validation, unclosed blocks and variables out of scope. Do you want to auto-correct them? Y/n'
+    puts ' block length validation and unclosed blocks. Do you want to auto-correct them? Y/n'
     answer = gets.chomp.upcase
     until %w[Y N].include?(answer)
       puts 'Please select Y/n. Do you want to autocorrect the indentation?'

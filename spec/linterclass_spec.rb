@@ -79,27 +79,30 @@ describe LinterClass do
 
     it 'Returns the lines with missing parenthesis and which parenthesis is missing' do
       linter.validate('Y')
-      expect(linter.missing_parenthesis).to eql(["Line 6 seem to have more '(' than ')'", "Line 9 seem to have more '[' than ']'"])
+      expect(linter.missing_parenthesis).to eql(["Line 6 has more '(' than ')'",
+                                                 "Line 9 has more '[' than ']'"])
     end
 
     it 'Runs the lines that excede the maximum length given' do
       linter.validate('Y')
-      expect(linter.line_length_errors).to eql([["Line 16 does not satisfy the maximum line length given of 50"]])
+      expect(linter.line_length_errors).to eql([["Line 16 doesn't satisfy the maximum line length of 50"]])
     end
 
     it 'Returns the blocks who are larger than the given size' do
       linter.validate('Y')
-      expect(linter.block_errors).to eql(["Block starting at 1 does not satisfy the maximum block length given of 2", "Block starting at 4 does not satisfy the maximum block length given of 2"])
+      expect(linter.block_errors).to eql(["Block starting at 1 doesn't satisfy the maximum block length of 2",
+                                          "Block starting at 4 doesn't satisfy the maximum block length of 2"])
     end
 
     it 'Returns the lines which end with empty spaces' do
       linter.validate('Y')
-      expect(linter.trailing_space_errors).to eql([["Line 6 ends with trailing space"]])
+      expect(linter.trailing_space_errors).to eql([['Line 6 ends with trailing space']])
     end
 
     it 'Returns empty lines which have another preceding empty line' do
       linter.validate('Y')
-      expect(linter.multiple_empty_lines_errors).to eql([["Line 19 is preceded by another empty line"], ["Line 20 is preceded by another empty line"]])
+      expect(linter.multiple_empty_lines_errors).to eql([['Line 19 is preceded by another empty line'],
+                                                         ['Line 20 is preceded by another empty line']])
     end
 
     it 'Returns the lines with not the correct indentation' do
@@ -114,12 +117,13 @@ describe LinterClass do
 
     it 'Returns the lines in which operators do not have the correct surrounding spaces' do
       linter.validate('Y')
-      expect(linter.operator_spacing_errors).to eql(["Line 7 has wrong spacing around operator +", "Line 7 has wrong spacing around operator >"])
+      expect(linter.operator_spacing_errors).to eql(['Line 7 has wrong spacing around operator +',
+                                                     'Line 7 has wrong spacing around operator >'])
     end
 
     it 'Returns the blocks that were not closed' do
       linter_missing_block.validate('Y')
-      expect(linter_missing_block.block_not_closed).to eql(["Block starting on line 4 is not closed"])
+      expect(linter_missing_block.block_not_closed).to eql(['Block starting on line 4 is not closed'])
     end
   end
 
@@ -155,7 +159,7 @@ describe LinterClass do
 
   describe '#autocorrect' do
     it 'Corrects most style issues. It does not return anything but we can check each error list' do
-      expect(linter_indented.autocorrect).to eql(nil)
+      expect(linter_indented.autocorrect).to eql([])
     end
 
     it 'Trailing spaces should have been removed' do

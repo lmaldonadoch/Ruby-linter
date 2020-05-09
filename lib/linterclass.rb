@@ -1,10 +1,12 @@
-# rubocop:disable Layout/LineLength
 require_relative './modules/linter.rb'
 
 class LinterClass
   include Linter
 
-  attr_reader :block_not_closed, :operator_spacing_errors, :empty_line_eof_errors, :line_indentation_errors, :arr, :block_dictionary, :missing_parenthesis, :line_length_errors, :block_errors, :trailing_space_errors, :multiple_empty_lines_errors
+  attr_reader :block_not_closed, :operator_spacing_errors, :empty_line_eof_errors,
+              :line_indentation_errors, :arr, :block_dictionary,
+              :missing_parenthesis, :line_length_errors, :block_errors,
+              :trailing_space_errors, :multiple_empty_lines_errors
 
   def initialize(arr, line_length, block_length, class_length, indentation)
     @arr = arr
@@ -41,6 +43,7 @@ class LinterClass
 
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Layout/LineLength
 
   def check_indentation
     count = 0
@@ -79,6 +82,16 @@ class LinterClass
         @arr[index].insert(n[2], ' ') if n[2].positive? && n[1].negative?
       end
     end
+    @arr << '' unless @empty_line_eof_errors.empty?
+    reset
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Layout/LineLength
+
+  private
+
+  def reset
     @missing_parenthesis = []
     @line_length_errors = []
     @block_errors = []
@@ -89,12 +102,7 @@ class LinterClass
     @operator_spacing_errors = []
     @block_dictionary = []
     @block_not_closed = []
-    @arr << '' unless @empty_line_eof_errors.empty?
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
-  # rubocop:enable Metrics/PerceivedComplexity
-
-  private
 
   def block_dictionary_creator(ret_arr, line, index)
     if line.block?
@@ -111,7 +119,9 @@ class LinterClass
   end
 
   def line_length_validate(ret_arr, line, index)
-    ret_arr << ["Line #{index + 1} does not satisfy the maximum line length given of #{@line_length}"] if line.length >= @line_length
+    if line.length >= @line_length
+      ret_arr << ["Line #{index + 1} doesn't satisfy the maximum line length of #{@line_length}"]
+    end
   end
 
   def trailing_space_validate(ret_arr, line, index)
@@ -123,9 +133,15 @@ class LinterClass
   end
 
   def parenthesis(ret_arr, line, index)
-    ret_arr << "Line #{index + 1} seem to have more '#{parenthesis_even(line)[1]}' than '#{parenthesis_even(line)[0]}'" unless parenthesis_even(line).nil?
-    ret_arr << "Line #{index + 1} seem to have more '#{brackets_even(line)[1]}' than '#{brackets_even(line)[0]}'" unless brackets_even(line).nil?
-    ret_arr << "Line #{index + 1} seem to have more '#{curly_brackets_even(line)[1]}' than '#{curly_brackets_even(line)[0]}'" unless curly_brackets_even(line).nil?
+    unless parenthesis_even(line).nil?
+      ret_arr << "Line #{index + 1} has more '#{parenthesis_even(line)[1]}' than '#{parenthesis_even(line)[0]}'"
+    end
+    unless brackets_even(line).nil?
+      ret_arr << "Line #{index + 1} has more '#{brackets_even(line)[1]}' than '#{brackets_even(line)[0]}'"
+    end
+    unless curly_brackets_even(line).nil?
+      ret_arr << "Line #{index + 1} has more '#{curly_brackets_even(line)[1]}' than '#{curly_brackets_even(line)[0]}'"
+    end
   end
 
   def empty_line_eof
@@ -144,14 +160,11 @@ class LinterClass
     @block_dictionary.each do |block|
       if block.length < 3
         @block_not_closed << "Block starting on line #{block[0]} is not closed"
-      else
-        if @arr[block[0] - 1].start_with?('class') && block[2] - block[0] > @class_length
-          @block_errors << "Block starting at #{block[0]} does not satisfy the maximum class length given of #{@class_length}"
-        elsif block[2] - block[0] > @block_length
-          @block_errors << "Block starting at #{block[0]} does not satisfy the maximum block length given of #{@class_length}"
-        end
+      elsif @arr[block[0] - 1].start_with?('class') && block[2] - block[0] > @class_length
+        @block_errors << "Block starting at #{block[0]} doesn't satisfy the maximum class length of #{@class_length}"
+      elsif block[2] - block[0] > @block_length
+        @block_errors << "Block starting at #{block[0]} doesn't satisfy the maximum block length of #{@class_length}"
       end
     end
   end
-  # rubocop:enable Layout/LineLength
 end

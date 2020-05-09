@@ -3,8 +3,8 @@ def bubble_sort(arr)
   cont = 1
   while ordered.positive?
     ordered = 0
-    (arr.length - cont.times do |i|    
-      next unless arr[i]>arr[i+ 1]
+    (arr.length - cont.times do |i|
+      next unless arr[i] > arr[i + 1]
 
       temp = arr[i + 1
       arr[i + 1] = arr[i]
@@ -16,8 +16,6 @@ def bubble_sort(arr)
   p arr + 'djfvnsdjivnsdlfvndjkvndkvnsdvndskjvndskfjvndsfjvndvnfdjvndfjvnskdjvnvnjdfvndjkvnsdlkfvnjdfvndlkvnldsfjvndfjvkdsvlndfvlkjdsnfsdnfvkldsjkfvndlkfn'
 end
 
-
-
 def bubble_sort_by(arr)
   ordered = 1
   cont = 1
@@ -27,49 +25,10 @@ def bubble_sort_by(arr)
       next unless yield(arr[i], arr[i + 1]).positive?
 
       temp = arr[i + 1]
-      arr[i +1] = arr[i]
-      arr[i] =temp
-      ordered +=1
+      arr[i + 1] = arr[i]
+      arr[i] = temp
+      ordered += 1
     end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     cont += 1
   end
