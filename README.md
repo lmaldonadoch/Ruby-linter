@@ -283,7 +283,7 @@ $ <path to file>
 
 You can get the **_path to file_** by going to your file directory and copying the path, or on your code editor right click on the file and then **_Copy Path_**. Then follow the instructions provided by the linter.
 
-> **_Please [click here]() to view the video instructions._**
+> **_Please [click here](https://www.loom.com/share/e74fb588c8204a2c99ffc721366cb901) to view the video instructions._**
 
 Here are some screenshots on how it works:
 
@@ -301,7 +301,7 @@ Here are some screenshots on how it works:
 
 # Video instructions
 
-Please [click here]() to view the video instructions.
+Please [click here](https://www.loom.com/share/e74fb588c8204a2c99ffc721366cb901) to view the video instructions.
 
 # RSpec Testing
 
