@@ -270,7 +270,28 @@ Or you can download the zip file directly by clicking on **_Download ZIP_** file
 
 ![screenshot](images/screenshot5.png)
 
-Once the folder is on your computer, run the following commands:
+Once the folder is on your computer, please go to the root directory by typing the next command:
+
+```
+$ cd ruby-linter
+```
+
+Here, you can create an alias/softlink for the file so that you can run it from the root directory. To do that, please type the next commands:
+
+**_On windows/Mac_**
+
+```
+$ ln -s $PWD/linter /usr/local/bin/
+
+```
+
+**_On Linux_**
+
+```
+$ ln -s $PWD/linter /usr/local/bin/
+```
+
+Then you can run the file from the root directory
 
 ```
 $ cd ruby-linter
@@ -279,6 +300,20 @@ $ linter
 Please provide the path to the file you would like to check for errors
 
 $ <path to file>
+
+```
+
+If you would not like to create an alias/softlink then you can just go into the bin folder and then run the linter like this:
+
+```
+$ cd ruby-linter
+$ cd bin
+$ ruby linter
+
+Please provide the path to the file you would like to check for errors
+
+$ <path to file>
+
 ```
 
 You can get the **_path to file_** by going to your file directory and copying the path, or on your code editor right click on the file and then **_Copy Path_**. Then follow the instructions provided by the linter.
@@ -308,19 +343,25 @@ Please [click here](https://www.loom.com/share/e74fb588c8204a2c99ffc721366cb901)
 The code was tested using RSpec. If you would like run the tests yourself please make sure you have RSpec installed on your local machine. To verify it you can open your terminal and type:
 
 ```
-$ rspec --version
+
+\$ rspec --version
+
 ```
 
 If it does not show you a version of RSpect then please run the following command
 
 ```
-$ gem install rspec
+
+\$ gem install rspec
+
 ```
 
 To run the tests please go to the root file of the repo and run
 
 ```
-$ rspec
+
+\$ rspec
+
 ```
 
 And the tests should show this:
@@ -330,7 +371,9 @@ And the tests should show this:
 If you would like to customize the tests, please type on your terminal:
 
 ```
-$ cd spec
+
+\$ cd spec
+
 ```
 
 And open the file you would like to run custom tests on.
@@ -374,3 +417,7 @@ Give a ⭐️ if you like this project!
 ## License
 
 This project is [MIT](lic.url) licensed.
+
+```
+
+```

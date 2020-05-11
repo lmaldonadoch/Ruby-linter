@@ -12,7 +12,7 @@ file = gets.chomp
 errors = ErrorHandler.new(file)
 
 if errors.file_validations != true
-  puts file.file_validate
+  puts errors.file_validate(file)
 else
   linter = LinterClass.new(File.readlines(file).map(&:chomp),
                            line_length, block_length,
