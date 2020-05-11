@@ -288,7 +288,7 @@ $ ln -s $PWD/linter /usr/local/bin/
 **_On Linux_**
 
 ```
-$ ln -s $PWD/linter /usr/local/bin/
+$ sudo ln -s $PWD/linter /usr/local/bin/
 ```
 
 Then you can run the file from the root directory
