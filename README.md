@@ -43,7 +43,7 @@ The project's goal was to create a Linter to use in your everyday coding life. T
 - Operator spacing.
 - Unclosed block.
 
-Additional to this, the linter allows you to auto-correct most of these style issues just by typing 'y'.
+Additional to this, the linter allows you to auto-correct most of these style issues just by typing 'y'. I decided to work on a.
 
 ## Project Structure
 
@@ -283,7 +283,7 @@ $ <path to file>
 
 You can get the **_path to file_** by going to your file directory and copying the path, or on your code editor right click on the file and then **_Copy Path_**. Then follow the instructions provided by the linter.
 
-> **_Please [click here]() to view the video instructions._**
+> **_Please [click here](https://www.loom.com/share/e74fb588c8204a2c99ffc721366cb901) to view the video instructions._**
 
 Here are some screenshots on how it works:
 
@@ -301,7 +301,7 @@ Here are some screenshots on how it works:
 
 # Video instructions
 
-Please [click here]() to view the video instructions.
+Please [click here](https://www.loom.com/share/e74fb588c8204a2c99ffc721366cb901) to view the video instructions.
 
 # RSpec Testing
 

@@ -3,7 +3,7 @@ require_relative '../lib/modules/file_validate.rb'
 
 describe ErrorHandler do
   include FileValidate
-  let(:file) { '/home/luis/Desktop/microverse/Ruby/ruby-linter/spec/errorhandler_spec.rb' }
+  let(:file) { 'spec/errorhandler_spec.rb' }
   let(:errors) do
     [["Line 6 seem to have more '(' than ')"], ['Line 16 does not satisfy the maximum line length given of 120'],
      ['Line 6 ends with trailing space'], ['Line 30 has wrong spacing around operator +']]

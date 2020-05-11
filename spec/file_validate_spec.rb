@@ -17,9 +17,5 @@ describe FileValidate do
     it 'Returns an error when the file exists but it is not a ruby file' do
       expect(file_validate(rubo)).to eql('The file is not a ruby file. Please select a ruby file with extension .rb')
     end
-
-    it 'Returns an error when the file exists, has a ruby extension but is empty' do
-      expect(file_validate('./dummy.rb')).to eql('The file is empty. TOTAL ERRORS 0')
-    end
   end
 end
