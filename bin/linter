@@ -1,0 +1,96 @@
+#!/usr/bin/env ruby
+require_relative '../lib/linterclass.rb'
+require_relative '../lib/errorhandler.rb'
+
+line_length = 120
+block_length = 30
+class_length = 150
+indentation = 2
+
+puts 'Please provide the path to the file you would like to check for errors'
+file = gets.chomp
+errors = ErrorHandler.new(file)
+
+if errors.file_validations != true
+  puts errors.file_validate(file)
+else
+  linter = LinterClass.new(File.readlines(file).map(&:chomp),
+                           line_length, block_length,
+                           class_length,
+                           indentation)
+  answer = 'Y'
+  puts ''
+
+  if linter.line_indentation_errors != []
+    print 'The file contains some indentation errors. Indentation is important for enhanced functionality like'
+    puts ' block length validation and unclosed blocks. Do you want to auto-correct them? Y/n'
+    answer = gets.chomp.upcase
+    until %w[Y N].include?(answer)
+      puts 'Please select Y/n. Do you want to autocorrect the indentation?'
+      answer = gets.chomp.upcase
+    end
+  end
+  if answer == 'Y'
+    linter.indentation_autocorrect
+    File.open(file, 'w') do |f|
+      linter.arr.each do |n|
+        f.puts n
+      end
+    end
+  end
+  linter.validate(answer)
+  errors = ErrorHandler.new(linter.missing_parenthesis,
+                            linter.line_length_errors,
+                            linter.trailing_space_errors,
+                            linter.multiple_empty_lines_errors,
+                            linter.operator_spacing_errors,
+                            linter.block_errors,
+                            linter.empty_line_eof_errors,
+                            linter.line_indentation_errors,
+                            linter.block_not_closed)
+  puts "********** TOTAL ERRORS #{errors.total_errors} **********"
+  puts ''
+  puts ''
+  puts errors.print_errors
+
+  if (linter.trailing_space_errors.length + linter.operator_spacing_errors.length +
+      linter.empty_line_eof_errors.length + linter.multiple_empty_lines_errors.length).positive?
+    print 'Do you want to auto-correct the trailing white spaces,'
+    puts ' spacing around operators, empty line at end of file and multiple empty lines errors? Y/n'
+    answer = gets.chomp.upcase
+
+    until %w[Y N].include?(answer)
+      puts 'Please select Y/n. Do you want to autocorrect the mentioned errors?'
+      answer = gets.chomp.upcase
+    end
+
+    if answer == 'Y'
+      linter.indentation_autocorrect
+      linter.autocorrect
+      File.open(file, 'w') do |f|
+        linter.arr.each do |n|
+          f.puts n
+        end
+      end
+      total_errors = errors.total_errors
+      linter.validate(answer)
+      errors = ErrorHandler.new(linter.missing_parenthesis,
+                                linter.line_length_errors,
+                                linter.trailing_space_errors,
+                                linter.multiple_empty_lines_errors,
+                                linter.operator_spacing_errors,
+                                linter.block_errors,
+                                linter.empty_line_eof_errors,
+                                linter.line_indentation_errors,
+                                linter.block_not_closed)
+      puts ''
+      puts ''
+      puts "ERRORS BEFORE AUTO-CORRECT: #{total_errors}"
+      puts "ERRORS CORRECTED: #{total_errors - errors.total_errors}"
+      puts "********** NEW TOTAL ERRORS #{errors.total_errors}**********"
+      puts ''
+      puts ''
+      puts errors.print_errors
+    end
+  end
+end
