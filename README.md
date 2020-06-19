@@ -398,7 +398,7 @@ Please [click here](https://www.notion.so/microverse/Build-your-own-linter-b17a3
 
 - Github: [@lmaldonadoch](https://github.com/lmaldonadoch)
 - Twitter: [@LuisAngelMCh](https://twitter.com/LuisAngelMCh)
-- Linkedin: [linkedin](https://www.linkedin.com/in/luis-angel-maldonado-5b503a1a3/)
+- Linkedin: [linkedIn](https://www.linkedin.com/in/luis-angel-maldonado-5b503a1a3/)
 
 ## Future Upgrades
 
