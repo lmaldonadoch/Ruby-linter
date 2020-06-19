@@ -404,7 +404,7 @@ Please [click here](https://www.notion.so/microverse/Build-your-own-linter-b17a3
 
 - Add a validation for conditionals, always use && over 'and', and || over 'or'.
 - Add a validation for conditionals to warn users of miss-use of = signs when == is more appropriate.
-- Make a ruby gem from my lint.
+- Make a Ruby gem from my lint.
 
 Contributions, issues and feature requests are welcome!
 
