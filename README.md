@@ -400,6 +400,14 @@ Please [click here](https://www.notion.so/microverse/Build-your-own-linter-b17a3
 - Twitter: [@LuisAngelMCh](https://twitter.com/LuisAngelMCh)
 - Linkedin: [linkedin](https://www.linkedin.com/in/luis-angel-maldonado-5b503a1a3/)
 
+## Future Upgrades
+
+- Add a validation for conditionals, always use && over 'and', and || over 'or'.
+- Add a validation for conditionals to warn users of miss-use of = signs when == is more appropriate.
+- Make a ruby gem from my lint.
+
+Contributions, issues and feature requests are welcome!
+
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!
